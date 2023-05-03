@@ -2,7 +2,7 @@ package com.digital.electronics.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import com.digital.electronics.utils.Utils
 import java.util.Date;
 import java.util.HashMap;
 
@@ -23,21 +23,18 @@ public class ShoppingCart {
 
     public HashMap<String, Integer> productQuantities;
 
-//    @JsonDeserialize(using = MongoDateConverter.class)
     public Date lastModified;
 
-//    @JsonDeserialize(using = MongoDateConverter.class)
     public Date orderDate;
 
-    //total price
-    public int totalPrice = 0;
+    public double totalPrice = 0;
 
     public ShoppingCart(){}
 
     public ShoppingCart(String status, String userName,
                         HashMap<String, Product> products,
                         HashMap<String, Integer> productQuantities,
-                        Date orderDate, Date lastModified, int totalPrice){
+                        Date orderDate, Date lastModified, double totalPrice){
         this.status = status;
         this.userName = userName;
         this.products = products;
@@ -56,17 +53,14 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product){
-
-        //Check if the product is in the HashMap
-
         this.products.putIfAbsent(product.getId(), product);
-
     }
 
-    public void addProductQuantity(Product product){
+    public void addProductQuantity(Product product, boolean isDiscountApplied){
         String productId = product.getId();
+        int quantity = 0;
         if(this.productQuantities.containsKey(productId)){
-            int quantity = this.productQuantities.get(productId);
+            quantity = this.productQuantities.get(productId);
             quantity++;
             this.productQuantities.put(productId, quantity);
         }
@@ -74,7 +68,10 @@ public class ShoppingCart {
             // init the product quantities if key not found
             this.productQuantities.put(productId, 1);
         }
-        this.totalPrice += product.price;
+        if(isDiscountApplied)
+            this.totalPrice = Utils.calculateBuyOneGetHalfPrice(product,quantity);
+        else
+            this.totalPrice += product.price;
     }
 
     public void removeProduct(String productId){
