@@ -111,7 +111,7 @@ public class ShoppingCartRestController {
         }
 
         cart.addProduct(product);
-        cart.addProductQuantity(product);
+        cart.addProductQuantity(product, isDiscountApplied);
         cart.lastModified = new Date();
         //update product stock
         if(!product.removeStock()){
