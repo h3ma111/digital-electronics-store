@@ -30,14 +30,14 @@ public class Product {
     public Date lastModified;
 
     public String description;
-    public int price = 0;
+    public double price = 0;
     public float starRating = 0;
     public String imageUrl;
     private int stock = 1000;
 
     public Product(){ }
 
-    public Product(String productName, String productCode, int price,
+    public Product(String productName, String productCode, double price,
                    Date releaseDate, String description, float starRating, String imageUrl, int stock){
         this.productName = productName;
         this.productCode = productCode;
