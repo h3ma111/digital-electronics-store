@@ -279,7 +279,7 @@ Payload to send example:
     "productQuantities": {},
     "lastModified": <epoch>,
     "orderDate": <epoch>",
-    "totalPrice": <float>
+    "totalPrice": <double>
 }
 ```
 ###### Response
